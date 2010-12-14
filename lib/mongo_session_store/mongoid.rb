@@ -24,6 +24,9 @@ module ActionDispatch
         end
 
         def get_session(env, sid)
+          if sid and not BSON::ObjectId.legal?(sid)
+            sid = generate_sid
+          end 
           sid ||= generate_sid
           session = find_session(sid)
           env[SESSION_RECORD_KEY] = session
